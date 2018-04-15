@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Notiz</string>
     <string name="action_settings">Settings</string>
+    <string-array name="Notifications">
+        <item>Köpa mjölk</item>
+        <item>Fyll på busskort</item>
+        <item>Ringa frisören</item>
+        <item>Uppdatera medlemsskap på gymmet</item>
+        <item>Gör ingenting</item>
+    </string-array>
 </resources>
