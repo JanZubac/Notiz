@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpNotifications() {
-        notifications.add("Köpa mjölk");
-        notifications.add("Dricka mjölk");
 
         arrayAdapter = new ArrayAdapter<String>(
                 this,

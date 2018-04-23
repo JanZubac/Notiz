@@ -17,16 +17,20 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        t = (EditText) findViewById(R.id.activity);
     }
 
     public void saveNotification(View view) {
         saveButton = (Button) findViewById(R.id.savebutton);
-        t = (EditText) findViewById(R.id.activity);
 
         Intent intent = new Intent();
         intent.putExtra("editTextValue", t.getText().toString());
         setResult(RESULT_OK, intent);
         setContentView(R.layout.activity_main);
         finish();
+    }
+
+    public void clearText(View view) {
+        t.setText("");
     }
 }
