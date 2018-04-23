@@ -53,7 +53,7 @@
         android:layout_marginStart="8dp"
         android:onClick="enterNotificationActivity"
         android:src="@drawable/addicon"
-        app:backgroundTint="@android:color/holo_blue_bright"
+        app:backgroundTint="?attr/colorControlHighlight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.977"
@@ -71,12 +71,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="enterMap"
-        android:src="@drawable/addicon"
-        app:backgroundTint="@android:color/holo_blue_bright"
+        android:src="@drawable/map"
+        app:backgroundTint="?attr/colorControlHighlight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintHorizontal_bias="0.832"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
