@@ -1,10 +1,15 @@
 package com.example.jan.notiz;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.icu.text.IDNA;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -30,12 +35,41 @@ public class MainActivity extends AppCompatActivity {
         notifications = new ArrayList<String>();
         setUpNotifications();
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.addicon);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,  "main")
+                .setSmallIcon(R.drawable.exl)
+                .setContentTitle("Bra jobbat!")
+                .setContentText("Du startade nyss världens bästa applikation")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        int id = 0;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel
+            CharSequence name = "Comm channel";
+            String description = "Notification channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel("main", name, importance);
+            mChannel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = (NotificationManager) getSystemService(
+                    NOTIFICATION_SERVICE);
+
+            NotificationManagerCompat notMan = NotificationManagerCompat.from(this);
+
+
+            notificationManager.createNotificationChannel(mChannel);
+            notMan.notify(id++, mBuilder.build());
+        }
+
+
+
     }
 
     private void setUpNotifications() {
