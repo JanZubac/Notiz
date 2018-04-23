@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.addicon);
+
+        FloatingActionButton mapButton = (FloatingActionButton) findViewById(R.id.karta);
         fab.setImageResource(R.drawable.addicon);
     }
 
@@ -67,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
         startActivityForResult(intent, 1);
     }
+
+
+    public void enterMap(View view) {
+        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
