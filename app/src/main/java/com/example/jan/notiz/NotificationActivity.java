@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 public class NotificationActivity extends AppCompatActivity {
 
-    Button saveButton;
+    Button saveButton, mapButton;
     EditText t;
 
     @Override
@@ -29,6 +29,7 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         finish();
     }
+
 
     public void clearText(View view) {
         t.setText("");
