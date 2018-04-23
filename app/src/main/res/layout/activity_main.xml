@@ -32,7 +32,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/Notifications"
         android:scrollbars="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:layout_constraintVertical_bias="0.0" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -51,6 +51,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:onClick="enterNotificationActivity"
         android:src="@drawable/addicon"
         app:backgroundTint="@android:color/holo_blue_bright"
         app:layout_constraintBottom_toBottomOf="parent"
