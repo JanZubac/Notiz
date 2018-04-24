@@ -73,17 +73,10 @@
         android:onClick="enterMap"
         android:scaleType="center"
         android:src="@drawable/map"
-<<<<<<< HEAD
-        app:backgroundTint="?attr/colorBackgroundFloating"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fab"
-        app:layout_constraintHorizontal_bias="0.972"
-=======
         app:backgroundTint="?android:attr/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.679"
->>>>>>> 2f206f0b8c6aa0be01f48a9e73fc5a9410bd7a3e
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
