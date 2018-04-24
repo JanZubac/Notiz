@@ -7,7 +7,7 @@
     tools:context="com.example.jan.notiz.NotificationActivity">
 
     <EditText
-        android:id="@+id/activity"
+        android:id="@+id/title"
         android:layout_width="311dp"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
@@ -17,13 +17,54 @@
         android:ems="10"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
-        android:text="Enter your notification text"
-        android:onClick = "clearText"
+        android:onClick="clearTitle"
+        android:text="Enter your notification name"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.17" />
+
+    <EditText
+        android:id="@+id/notificationText"
+        android:layout_width="311dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="textPersonName"
+        android:onClick="clearText"
+        android:text="Enter your notification text"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32" />
+
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="311dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="textPersonName"
+        android:text="Enter the address"
+        android:onClick="clearAddress"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473" />
 
     <Button
         android:id="@+id/savebutton"
@@ -40,7 +81,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity" />
+        app:layout_constraintTop_toBottomOf="@+id/address" />
 
     <ImageButton
         android:id="@+id/back"
