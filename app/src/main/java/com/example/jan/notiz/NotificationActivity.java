@@ -37,13 +37,17 @@ public class NotificationActivity extends AppCompatActivity {
         intent.putStringArrayListExtra("notificationArray", notification);
         //intent.putExtra("editTextValue", text.getText().toString());
         setResult(RESULT_OK, intent);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
         finish();
     }
 
     public void goBack(View view) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //startActivity(intent);
+
+        //setContentView(R.layout.activity_main);
+
+        finish();
     }
 
     public void clearTitle(View view) {
