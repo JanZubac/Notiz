@@ -3,7 +3,6 @@ package com.example.jan.notiz;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.icu.text.IDNA;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     ListView l;
     List<String> notifications;
+    ArrayList<String> notification;
     ArrayAdapter<String> arrayAdapter;
 
     @Override
@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        l = (ListView) findViewById(R.id.list);
+        l = findViewById(R.id.list);
         notifications = new ArrayList<String>();
         setUpNotifications();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.addicon);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,  "main")
@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitle("Bra jobbat!")
                 .setContentText("Du startade nyss världens bästa applikation")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        int id = 0;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel
@@ -66,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
 
 
             notificationManager.createNotificationChannel(mChannel);
-            notMan.notify(id++, mBuilder.build());
+            notMan.notify(0, mBuilder.build());
         }
 
 
 
 
-        FloatingActionButton mapButton = (FloatingActionButton) findViewById(R.id.karta);
+        FloatingActionButton mapButton = findViewById(R.id.karta);
         fab.setImageResource(R.drawable.addicon);
     }
 
@@ -91,8 +89,11 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                String strEditText = data.getStringExtra("editTextValue");
-                notifications.add(strEditText);
+                notification = data.getStringArrayListExtra("notificationArray");
+                for(String s: notification) {
+                    System.out.println(s);
+                }
+                notifications.add(notification.get(0));
 
                 arrayAdapter.notifyDataSetChanged();
             }
