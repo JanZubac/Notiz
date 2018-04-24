@@ -3,34 +3,24 @@ package com.example.jan.notiz;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
-import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,20 +34,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean gps_enabled = false;
     boolean network_enabled = false;
     Timer timer1;
+    FloatingActionButton mFab;
     LocationManager lm;
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        locationResult = new LocationResult(){
+        onMapReady(mMap);
+        initMap();
+
+        locationResult = new LocationResult() {
             @Override
-            public void gotLocation(Location location){
+            public void gotLocation(Location location) {
                 //Got the location!
-                System.out.println("OKEJ");
-                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
+                LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(pos));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
             }
         };
 
@@ -78,21 +71,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
-
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Lund and move the camera
-        LatLng lund = new LatLng(55.7047,13.1910);
-        mMap.addMarker(new MarkerOptions().position(lund).title("Marker in Lund"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(lund));
     }
 
-
-
+    private void initMap() {
+        int googlePlayStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        if (googlePlayStatus != ConnectionResult.SUCCESS) {
+            GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+            apiAvailability.getErrorDialog(this, googlePlayStatus, 9000).show(); //9000 is standard value
+            finish();
+        } else {
+            if (mMap != null) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                }
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                mMap.getUiSettings().setAllGesturesEnabled(true);
+            }
+        }
+    }
 
 
     public boolean getLocation(Context context, LocationResult result) {
@@ -132,7 +132,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locationListenerGps = new LocationListener() {
         public void onLocationChanged(Location location) {
             timer1.cancel();
-            locationResult.gotLocation(location);
+
+            if (mMap != null) {
+                mMap.clear();
+                LatLng gps = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.addMarker(new MarkerOptions()
+                        .position(gps)
+                        .title("Current Position"));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 12));
+            }
+
+            System.out.println("hej");
+
             lm.removeUpdates(this);
             lm.removeUpdates(locationListenerNetwork);
         }
@@ -191,18 +202,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    System.out.println("Permission denied!");
                 }
                 return;
             }
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
