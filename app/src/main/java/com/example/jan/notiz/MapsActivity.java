@@ -1,21 +1,26 @@
 package com.example.jan.notiz;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,15 +31,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private LocationManager locationManager;
     private SupportMapFragment mapFragment;
     private EditText information;
+    private LocationResult locationResult;
     private static final String TAG = "MapsActivity";
-
+    boolean gps_enabled = false;
+    boolean network_enabled = false;
+    Timer timer1;
+    LocationManager lm;
 
 
 
@@ -42,14 +52,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        MyLocation.LocationResult locationResult = new MyLocation.LocationResult(){
+        locationResult = new LocationResult(){
             @Override
             public void gotLocation(Location location){
                 //Got the location!
+                System.out.println("OKEJ");
+                mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
             }
         };
-        MyLocation myLocation = new MyLocation();
-        myLocation.getLocation(this, locationResult);
+
+        getLocation(this, locationResult);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
@@ -58,118 +71,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         information.setText("Testing");
 
 
-        // Acquire a reference to the system Location Manager
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
-
     }
 
-
-
-
-    private static final int TWO_MINUTES = 1000 * 60 * 2;
-
-    /** Determines whether one Location reading is better than the current Location fix
-     * @param location  The new Location that you want to evaluate
-     * @param currentBestLocation  The current Location fix, to which you want to compare the new one
-     */
-    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-        if (currentBestLocation == null) {
-            // A new location is always better than no location
-            return true;
-        }
-
-        // Check whether the new location fix is newer or older
-        long timeDelta = location.getTime() - currentBestLocation.getTime();
-        boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-        boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-        boolean isNewer = timeDelta > 0;
-
-        // If it's been more than two minutes since the current location, use the new location
-        // because the user has likely moved
-        if (isSignificantlyNewer) {
-            return true;
-            // If the new location is more than two minutes older, it must be worse
-        } else if (isSignificantlyOlder) {
-            return false;
-        }
-
-        // Check whether the new location fix is more or less accurate
-        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-        boolean isLessAccurate = accuracyDelta > 0;
-        boolean isMoreAccurate = accuracyDelta < 0;
-        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-
-        // Check if the old and new location are from the same provider
-        boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                currentBestLocation.getProvider());
-
-        // Determine location quality using a combination of timeliness and accuracy
-        if (isMoreAccurate) {
-            return true;
-        } else if (isNewer && !isLessAccurate) {
-            return true;
-        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-            return true;
-        }
-        return false;
-    }
-
-    /** Checks whether two providers are the same */
-    private boolean isSameProvider(String provider1, String provider2) {
-        if (provider1 == null) {
-            return provider2 == null;
-        }
-        return provider1.equals(provider2);
-    }
-
-
-    // Define a listener that responds to location updates
-    LocationListener locationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            information.setText("");
-            Toast.makeText(getBaseContext(), "Location changed: Lat: " + location.getLatitude() + " Lng: " + location.getLongitude(), Toast.LENGTH_SHORT);
-            String longitude = "Longitude: " + location.getLongitude();
-            Log.v(TAG, longitude);
-            String latitude = "Latitude: " + location.getLatitude();
-            Log.v(TAG, latitude);
-
-            /* Get city name from coordinates */
-            String cityName = null;
-            Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-            List<Address> addresses;
-            try {
-                addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                if (addresses.size() > 0) {
-                    System.out.println(addresses.get(0).getLocality());
-                    cityName = addresses.get(0).getLocality();
-                }
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            String s = longitude + "\n" + latitude + "\n\nMy current city is: " + cityName;
-            information.setText(s);
-        }
-
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-        public void onProviderEnabled(String provider) {}
-
-        public void onProviderDisabled(String provider) {}
-    };
-
-    // Register the listener with the Location Manager to receive location updates
-    String locationProvider = LocationManager.NETWORK_PROVIDER;
-
-  //  locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
 
 
@@ -183,4 +90,124 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(lund).title("Marker in Lund"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lund));
     }
+
+
+
+
+
+    public boolean getLocation(Context context, LocationResult result) {
+        //I use LocationResult callback class to pass location value from MyLocation to user code.
+        locationResult = result;
+        if (lm == null)
+            lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        //exceptions will be thrown if provider is not permitted.
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+        }
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+        }
+
+        //don't start listeners if no provider is enabled
+        if (!gps_enabled && !network_enabled)
+            return false;
+
+
+        if (gps_enabled)
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
+        if(network_enabled)
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
+        timer1=new Timer();
+        timer1.schedule(new GetLastLocation(), 20000);
+        return true;
+    }
+
+    LocationListener locationListenerGps = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            timer1.cancel();
+            locationResult.gotLocation(location);
+            lm.removeUpdates(this);
+            lm.removeUpdates(locationListenerNetwork);
+        }
+        public void onProviderDisabled(String provider) {}
+        public void onProviderEnabled(String provider) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    };
+
+    LocationListener locationListenerNetwork = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            timer1.cancel();
+            locationResult.gotLocation(location);
+            lm.removeUpdates(this);
+            lm.removeUpdates(locationListenerGps);
+        }
+        public void onProviderDisabled(String provider) {}
+        public void onProviderEnabled(String provider) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    };
+
+    class GetLastLocation extends TimerTask {
+        @SuppressLint("MissingPermission")
+        @Override
+        public void run() {
+            lm.removeUpdates(locationListenerGps);
+            lm.removeUpdates(locationListenerNetwork);
+
+            Location net_loc=null, gps_loc=null;
+            if(gps_enabled)
+                gps_loc=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(network_enabled)
+                net_loc=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            //if there are both values use the latest one
+            if(gps_loc!=null && net_loc!=null){
+                if(gps_loc.getTime()>net_loc.getTime())
+                    locationResult.gotLocation(gps_loc);
+                else
+                    locationResult.gotLocation(net_loc);
+                return;
+            }
+
+            if(gps_loc!=null){
+                locationResult.gotLocation(gps_loc);
+                return;
+            }
+            if(net_loc!=null){
+                locationResult.gotLocation(net_loc);
+                return;
+            }
+            locationResult.gotLocation(null);
+        }
+    }
+
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    public static abstract class LocationResult{
+        public abstract void gotLocation(Location location);
+    }
+
 }

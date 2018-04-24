@@ -9,6 +9,9 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+
+
+
     <application
 
         android:allowBackup="true"
@@ -42,6 +45,7 @@
 
         <activity
             android:name=".MapsActivity"
+
             android:label="@string/title_activity_maps"></activity>
     </application>
 
@@ -49,5 +53,6 @@
     ...
     <!-- Needed only if your app targets Android 5.0 (API level 21) or higher. -->
     <uses-feature android:name="android.hardware.location.gps" />
+
 
 </manifest>
