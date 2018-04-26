@@ -70,7 +70,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="enterMap"
+        android:onClick="sendCoordinates"
         android:scaleType="center"
         android:src="@drawable/map"
         app:backgroundTint="?android:attr/colorBackground"

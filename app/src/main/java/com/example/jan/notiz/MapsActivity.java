@@ -1,24 +1,32 @@
 package com.example.jan.notiz;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -29,6 +37,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean network_enabled = false;
     private FloatingActionButton mFab;
     private LocationManager lm;
+    ArrayList<ArrayList<String>> notifications;
+    int nbrNotifications = 0;
 
 
     @Override
@@ -44,8 +54,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mFab = (FloatingActionButton) findViewById(R.id.myloc);
         updatePos();
+
+        notifications = new ArrayList<ArrayList<String>>();
     }
 
+
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            return new LatLng(location.getLatitude(), location.getLongitude());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                notifications.add(data.getStringArrayListExtra("notArray"));
+                addMarker(getLocationFromAddress(this, notifications.get(nbrNotifications).get(2))); //2 is address
+            }
+        }
+        nbrNotifications++;
+        System.out.println("ON-ACTIVITY-RESULT FOR MAPS ACTIVITY");
+    }
+
+
+
+    private void addMarker(LatLng pos) {
+        mMap.addMarker(new MarkerOptions().position(pos).title(notifications.get(nbrNotifications).get(0)));
+    }
 
 
     private void updatePos() {
@@ -109,9 +161,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (mMap != null) {
                 mMap.clear();
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
- //               mMap.addMarker(new MarkerOptions()
- //                       .position(gps)
- //                       .title("Current Position"));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
             }
             lm.removeUpdates(this);
@@ -130,9 +179,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (mMap != null) {
                 mMap.clear();
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
-  //              mMap.addMarker(new MarkerOptions()
-  //                      .position(gps)
-  //                      .title("Current Position"));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
             }
             lm.removeUpdates(this);
