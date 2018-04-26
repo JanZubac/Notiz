@@ -51,16 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void updatePos() {
         locationResult = new LocationResult() {
             public void gotLocation(Location location) {
-                //Got the location!
+                // Location found!
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
-                //mMap.addMarker(new MarkerOptions().position(pos));
-
-                //mMap.getPositionIndicator().setVisible(true);
-                //mMap.getPositionIndicator().setZIndex(0);
-                //mMap.setZoomLevel(15);
-                //mMap.getPositionIndicator().setAccuracyIndicatorVisible(true);
-                //mMap.getPositionIndicator().setMarker(createImage(R.drawable.ic_location_dot));
-
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
             }
         };
@@ -116,11 +108,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onLocationChanged(Location location) {
             if (mMap != null) {
                 mMap.clear();
-                LatLng gps = new LatLng(location.getLatitude(), location.getLongitude());
+                LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
  //               mMap.addMarker(new MarkerOptions()
  //                       .position(gps)
  //                       .title("Current Position"));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 17));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
             }
             lm.removeUpdates(this);
             lm.removeUpdates(locationListenerNetwork);
@@ -137,11 +129,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onLocationChanged(Location location) {
             if (mMap != null) {
                 mMap.clear();
-                LatLng gps = new LatLng(location.getLatitude(), location.getLongitude());
+                LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
   //              mMap.addMarker(new MarkerOptions()
   //                      .position(gps)
   //                      .title("Current Position"));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 17));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
             }
             lm.removeUpdates(this);
 
