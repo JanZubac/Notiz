@@ -39,6 +39,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager lm;
     ArrayList<ArrayList<String>> notifications;
     int nbrNotifications = 0;
+    ArrayList<ArrayList<String>> list;
+    int j;
 
 
     @Override
@@ -56,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         updatePos();
 
         notifications = new ArrayList<ArrayList<String>>();
+
     }
 
 
@@ -79,7 +82,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    public void showMarkers(View view) {
+        //ArrayList<String> list = getIntent().getStringArrayListExtra("notArray");
+        list = new ArrayList<ArrayList<String>>();
+        int size = getIntent().getIntExtra("int", 0);
+        for(j = 0; j < size; ++j) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("array");
+            sb.append(j);
+            list.add(getIntent().getStringArrayListExtra(sb.toString()));
+            LatLng adr = getLocationFromAddress(this, list.get(j).get(2));
+            if (adr != null) {
+                addMarker(adr);
+            }
+        }
+        /*
+        if(list != null) {
+            notifications.add(list);
+            LatLng adr = getLocationFromAddress(this, list.get(2)); // 2 is the address
 
+            if (adr != null) {
+                addMarker(adr);
+            }
+            nbrNotifications++;
+        } */
+    }
+
+
+    /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -92,11 +122,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         nbrNotifications++;
         System.out.println("ON-ACTIVITY-RESULT FOR MAPS ACTIVITY");
     }
+    */
 
 
 
     private void addMarker(LatLng pos) {
-        mMap.addMarker(new MarkerOptions().position(pos).title(notifications.get(nbrNotifications).get(0)));
+        //mMap.addMarker(new MarkerOptions().position(pos).title(notifications.get(nbrNotifications).get(0)));
+        mMap.addMarker(new MarkerOptions().position(pos).title(list.get(j).get(0)));
+    }
+
+    public void goBack(View view) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 
 
