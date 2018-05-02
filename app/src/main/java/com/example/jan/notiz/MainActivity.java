@@ -67,11 +67,9 @@ public class MainActivity extends AppCompatActivity {
             notMan.notify(0, mBuilder.build());
         }
 
-
-
-
         FloatingActionButton mapButton = findViewById(R.id.karta);
         fab.setImageResource(R.drawable.addicon);
+
     }
 
     private void setUpNotifications() {
@@ -86,19 +84,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 notification = data.getStringArrayListExtra("notificationArray");
-                for(String s: notification) {
-                    System.out.println(s);
-                }
                 notifications.add(notification.get(0));
-
                 arrayAdapter.notifyDataSetChanged();
             }
         }
+        System.out.println("ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
     }
+
+
+
+
+    public void sendCoordinates(View view) {
+        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        intent.putStringArrayListExtra("notArray", notification); //FUNKAR ENDAST OM MAN GÅR DIREKT FRÅN NOT -> MAIN -> MAP
+
+        startActivityForResult(intent, 2);
+        setResult(RESULT_OK, intent);
+        finish();
+
+        System.out.println("SENDING COORDINATES");
+    }
+
+
 
 
 
@@ -107,11 +117,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-
-    public void enterMap(View view) {
-        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-        startActivityForResult(intent, 1);
-    }
 
 
     @Override

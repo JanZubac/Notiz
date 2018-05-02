@@ -39,6 +39,7 @@ public class NotificationActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         //setContentView(R.layout.activity_main);
         finish();
+        System.out.println("SENDING NOTIFICATION DATA TO MAIN-ACTIVITY");
     }
 
     public void goBack(View view) {
