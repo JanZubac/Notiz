@@ -2,6 +2,8 @@ package com.example.jan.notiz;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,11 +12,14 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -41,6 +46,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int nbrNotifications = 0;
     ArrayList<ArrayList<String>> list;
     int j;
+    ArrayList<LatLng> markerPositions;
+    float[] results;
 
 
     @Override
@@ -56,8 +63,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mFab = (FloatingActionButton) findViewById(R.id.myloc);
         updatePos();
+        results = new float[1];
 
         notifications = new ArrayList<ArrayList<String>>();
+        markerPositions = new ArrayList<LatLng>();
 
     }
 
@@ -198,6 +207,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (mMap != null) {
                 mMap.clear();
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+                int index = 0;
+                for(LatLng ll: markerPositions) {
+                    Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
+                    if(results[0] < 100) {
+                       // if(list.size() <= index) {
+                            sendNotice(list.get(index).get(0), list.get(index).get(1));
+                        //}
+                    }
+                    //index++;
+                }
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
             }
             lm.removeUpdates(this);
@@ -239,6 +258,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public static abstract class LocationResult{
         public abstract void gotLocation(Location location);
+    }
+
+    public void sendNotice(String title, String text) {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,  "main")
+                .setSmallIcon(R.drawable.exl)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel
+            CharSequence name = "Comm channel";
+            String description = "Notification channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel("main", name, importance);
+            mChannel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = (NotificationManager) getSystemService(
+                    NOTIFICATION_SERVICE);
+
+            NotificationManagerCompat notMan = NotificationManagerCompat.from(this);
+
+
+            notificationManager.createNotificationChannel(mChannel);
+            notMan.notify(0, mBuilder.build());
+        }
     }
 
 }
