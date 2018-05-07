@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
         l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // HÅRDKODAD ATT SKICKA ENBART EN STRÄNG FRÅN SENAST TILLAGDA NOTISEN. FUNKAR BARA FÖR 1 NOTIS
                 Intent intent = new Intent(getApplicationContext(), ItemListPopUpActivity.class);
+                intent.putExtra("detail", notification.get(1));
                 startActivity(intent);
-
             }
         });
 
