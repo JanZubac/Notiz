@@ -42,17 +42,4 @@ public class NotificationActivity extends AppCompatActivity {
         System.out.println("SENDING NOTIFICATION DATA TO MAIN-ACTIVITY");
     }
 
-
-
-    public void clearTitle(View view) {
-        title.setText("");
-    }
-
-    public void clearText(View view) {
-        text.setText("");
-    }
-
-    public void clearAddress(View view) {
-        address.setText("");
-    }
 }

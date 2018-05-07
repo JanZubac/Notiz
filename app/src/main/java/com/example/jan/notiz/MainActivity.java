@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     ListView l;
     List<String> notifications;
     ArrayList<String> notification;
+    ArrayList<ArrayList<String>> toSend;
     ArrayAdapter<String> arrayAdapter;
 
     @Override
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         l = findViewById(R.id.list);
         notifications = new ArrayList<String>();
+        toSend = new ArrayList<ArrayList<String>>();
         setUpNotifications();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 notification = data.getStringArrayListExtra("notificationArray");
+                toSend.add(notification);
                 notifications.add(notification.get(0));
                 arrayAdapter.notifyDataSetChanged();
             }
@@ -100,7 +103,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendCoordinates(View view) {
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-        intent.putStringArrayListExtra("notArray", notification); //FUNKAR ENDAST OM MAN GÅR DIREKT FRÅN NOT -> MAIN -> MAP
+        int i = 0;
+        for(ArrayList<String> l: toSend) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("array");
+            sb.append(i);
+            intent.putStringArrayListExtra(sb.toString(), l);
+            i++;
+        }
+        //intent.putStringArrayListExtra("notArray", notification); //FUNKAR ENDAST OM MAN GÅR DIREKT FRÅN NOT -> MAIN -> MAP
+        intent.putExtra("int", i);
 
         setResult(RESULT_OK, intent);
         startActivityForResult(intent, 2);
