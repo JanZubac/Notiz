@@ -1,7 +1,10 @@
 package com.example.jan.notiz;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +17,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +41,31 @@ public class MainActivity extends AppCompatActivity {
         l = findViewById(R.id.list);
         notifications = new ArrayList<String>();
         toSend = new ArrayList<ArrayList<String>>();
-        setUpNotifications();
+        arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                notifications);
+        l.setAdapter(arrayAdapter);
+
+        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), ItemListPopUpActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        TextView tv = (TextView) findViewById(R.id.textview);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.addicon);
+
+
 
         /*
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,  "main")
@@ -76,15 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setUpNotifications() {
-
-        arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                notifications );
-
-        l.setAdapter(arrayAdapter);
-    }
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -96,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
                 notifications.add(notification.get(0));
                 arrayAdapter.notifyDataSetChanged();
             }
-        }git
+        }
     }
+
 
 
 
