@@ -84,14 +84,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("BEFORE: ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 notification = data.getStringArrayListExtra("notificationArray");
                 notifications.add(notification.get(0));
                 arrayAdapter.notifyDataSetChanged();
             }
         }
-        System.out.println("ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
+        System.out.println("AFTER: ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
     }
 
 
@@ -101,15 +102,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         intent.putStringArrayListExtra("notArray", notification); //FUNKAR ENDAST OM MAN GÅR DIREKT FRÅN NOT -> MAIN -> MAP
 
-        startActivityForResult(intent, 2);
         setResult(RESULT_OK, intent);
+        startActivityForResult(intent, 2);
+
         finish();
 
         System.out.println("SENDING COORDINATES");
     }
-
-
-
 
 
     public void enterNotificationActivity(View view) {
