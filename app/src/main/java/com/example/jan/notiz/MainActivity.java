@@ -88,15 +88,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("BEFORE: ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 notification = data.getStringArrayListExtra("notificationArray");
                 toSend.add(notification);
                 notifications.add(notification.get(0));
                 arrayAdapter.notifyDataSetChanged();
             }
-        }
-        //System.out.println("ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
+        }git
     }
 
 
@@ -115,15 +115,13 @@ public class MainActivity extends AppCompatActivity {
         //intent.putStringArrayListExtra("notArray", notification); //FUNKAR ENDAST OM MAN GÅR DIREKT FRÅN NOT -> MAIN -> MAP
         intent.putExtra("int", i);
 
-        startActivityForResult(intent, 2);
         setResult(RESULT_OK, intent);
+        startActivityForResult(intent, 2);
+
         finish();
 
        // System.out.println("SENDING COORDINATES");
     }
-
-
-
 
 
     public void enterNotificationActivity(View view) {
