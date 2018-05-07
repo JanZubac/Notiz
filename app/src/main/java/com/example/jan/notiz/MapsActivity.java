@@ -46,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int nbrNotifications = 0;
     ArrayList<ArrayList<String>> list;
     int j;
+    int id = 0;
     ArrayList<LatLng> markerPositions;
     float[] results;
 
@@ -138,6 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void addMarker(LatLng pos) {
         //mMap.addMarker(new MarkerOptions().position(pos).title(notifications.get(nbrNotifications).get(0)));
         mMap.addMarker(new MarkerOptions().position(pos).title(list.get(j).get(0)));
+        markerPositions.add(pos);
     }
 
     public void goBack(View view) {
@@ -151,6 +153,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void gotLocation(Location location) {
                 // Location found!
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+                int index = 0;
+                for(LatLng ll: markerPositions) {
+                    Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
+                    if(results[0] < 100) {
+                        // if(list.size() <= index) {
+                        if(!list.get(index).get(3).equals("isNotified")) {
+                            sendNotice(list.get(index).get(0), list.get(index).get(1));
+                            list.get(index).set(3, "isNotified");
+                        }
+                        //}
+                    }
+                    index++;
+                }
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
             }
         };
@@ -205,23 +220,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     LocationListener locationListenerGps = new LocationListener() {
         public void onLocationChanged(Location location) {
+            System.out.println("I AM CALLED");
             if (mMap != null) {
-                mMap.clear();
-                LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+                //mMap.clear();
                 int index = 0;
+                LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
                 for(LatLng ll: markerPositions) {
                     Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
-                    if(results[0] < 100) {
-                       // if(list.size() <= index) {
+                    if (results[0] < 100) {
+                        // if(list.size() <= index) {
+                        if (!list.get(index).get(3).equals("isNotified")) {
                             sendNotice(list.get(index).get(0), list.get(index).get(1));
-                        //}
+                            list.get(index).set(3, "isNotified");
+                            //}
+                        }
+                        index++;
                     }
-                    //index++;
                 }
+
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
             }
-            lm.removeUpdates(this);
-            lm.removeUpdates(locationListenerNetwork);
+            //lm.removeUpdates(this);
+            //lm.removeUpdates(locationListenerNetwork);
         }
         public void onProviderDisabled(String provider) {}
         public void onProviderEnabled(String provider) {}
@@ -234,11 +254,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locationListenerNetwork = new LocationListener() {
         public void onLocationChanged(Location location) {
             if (mMap != null) {
-                mMap.clear();
+                //mMap.clear();
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+                int index = 0;
+                for(LatLng ll: markerPositions) {
+                    Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
+                    if(results[0] < 100) {
+                        // if(list.size() <= index) {
+                        if (!list.get(index).get(3).equals("isNotified")) {
+                            sendNotice(list.get(index).get(0), list.get(index).get(1));
+                            list.get(index).set(3, "isNotified");
+                            //}
+                        }
+                        index++;
+
+                    }
+                }
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
             }
-            lm.removeUpdates(this);
+            //lm.removeUpdates(this);
 
         }
         public void onProviderDisabled(String provider) {}
@@ -284,7 +318,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             notificationManager.createNotificationChannel(mChannel);
-            notMan.notify(0, mBuilder.build());
+            notMan.notify(id, mBuilder.build());
+            id++;
         }
     }
 

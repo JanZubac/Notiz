@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.addicon);
 
+        /*
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,  "main")
                 .setSmallIcon(R.drawable.exl)
                 .setContentTitle("Bra jobbat!")
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(mChannel);
             notMan.notify(0, mBuilder.build());
         }
+        */
 
         FloatingActionButton mapButton = findViewById(R.id.karta);
         fab.setImageResource(R.drawable.addicon);
@@ -94,8 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 notifications.add(notification.get(0));
                 arrayAdapter.notifyDataSetChanged();
             }
-        }
-        System.out.println("AFTER: ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
+        }git
     }
 
 
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         finish();
 
-        System.out.println("SENDING COORDINATES");
+       // System.out.println("SENDING COORDINATES");
     }
 
 
