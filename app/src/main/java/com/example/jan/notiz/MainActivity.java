@@ -4,10 +4,7 @@ import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-<<<<<<< HEAD
-=======
 import android.content.DialogInterface;
->>>>>>> origin/master
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -70,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.addicon);
 
-<<<<<<< HEAD
         int size = getIntent().getIntExtra("theSize", 0);
         if(size > 0) {
             for (int j = 0; j < size; ++j) {
@@ -83,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 notifications.add(l.get(0));
             }
         }
-=======
-
->>>>>>> origin/master
 
         /*
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,  "main")
