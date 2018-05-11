@@ -63,6 +63,7 @@ public class NotificationActivity extends AppCompatActivity {
         //startActivity(intent);
 
         //setContentView(R.layout.activity_main);
+        vibe.vibrate(80);
 
         finish();
     }

@@ -2,9 +2,11 @@ package com.example.jan.notiz;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
@@ -27,12 +29,13 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> notification;
     ArrayList<ArrayList<String>> toSend;
     ArrayAdapter<String> arrayAdapter;
+    Vibrator vibe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        vibe = (Vibrator) MainActivity.this.getSystemService(Context.VIBRATOR_SERVICE);
         l = findViewById(R.id.list);
         notifications = new ArrayList<String>();
         toSend = new ArrayList<ArrayList<String>>();
@@ -43,6 +46,19 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.addicon);
+
+        int size = getIntent().getIntExtra("theSize", 0);
+        if(size > 0) {
+            for (int j = 0; j < size; ++j) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("notification");
+                sb.append(j);
+                toSend.add(getIntent().getStringArrayListExtra(sb.toString()));
+            }
+            for(ArrayList <String> l: toSend) {
+                notifications.add(l.get(0));
+            }
+        }
 
         /*
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,  "main")
@@ -96,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 notifications.add(notification.get(0));
                 arrayAdapter.notifyDataSetChanged();
             }
-        }git
+        }
     }
 
 
@@ -104,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendCoordinates(View view) {
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        vibe.vibrate(80);
         int i = 0;
         for(ArrayList<String> l: toSend) {
             StringBuilder sb = new StringBuilder();
@@ -126,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void enterNotificationActivity(View view) {
         Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+        vibe.vibrate(80);
         startActivityForResult(intent, 1);
     }
 

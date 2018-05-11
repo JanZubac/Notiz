@@ -13,6 +13,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -43,19 +47,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FloatingActionButton mFab;
     private LocationManager lm;
     ArrayList<ArrayList<String>> notifications;
+    TextToSpeech tts;
     int nbrNotifications = 0;
     ArrayList<ArrayList<String>> list;
     int j;
     int id = 0;
     ArrayList<LatLng> markerPositions;
     float[] results;
+    Vibrator vibe;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        tts  =new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.UK);
+                }
+            }
+        });
         setContentView(R.layout.activity_maps);
+        vibe = (Vibrator) MapsActivity.this.getSystemService(Context.VIBRATOR_SERVICE);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -65,9 +80,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mFab = (FloatingActionButton) findViewById(R.id.myloc);
         updatePos();
         results = new float[1];
+        list = new ArrayList<ArrayList<String>>();
 
         notifications = new ArrayList<ArrayList<String>>();
         markerPositions = new ArrayList<LatLng>();
+        int size = getIntent().getIntExtra("int", 0);
+        for(int i = 0; i < size; ++i) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("array");
+            sb.append(i);
+            list.add(getIntent().getStringArrayListExtra(sb.toString()));
+        }
 
     }
 
@@ -94,13 +117,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void showMarkers(View view) {
         //ArrayList<String> list = getIntent().getStringArrayListExtra("notArray");
-        list = new ArrayList<ArrayList<String>>();
+        vibe.vibrate(80);
         int size = getIntent().getIntExtra("int", 0);
-        for(j = 0; j < size; ++j) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("array");
-            sb.append(j);
-            list.add(getIntent().getStringArrayListExtra(sb.toString()));
+        for(int j = 0; j < size; ++j) {
+            //StringBuilder sb = new StringBuilder();
+            //sb.append("array");
+            //sb.append(j);
+            //list.add(getIntent().getStringArrayListExtra(sb.toString()));
             LatLng adr = getLocationFromAddress(this, list.get(j).get(2));
             if (adr != null) {
                 addMarker(adr);
@@ -144,6 +167,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void goBack(View view) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        vibe.vibrate(80);
+        int i = 0;
+        if(list != null) {
+            for (ArrayList<String> l : list) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("notification");
+                sb.append(i);
+                intent.putStringArrayListExtra(sb.toString(), l);
+                i++;
+            }
+            intent.putExtra("theSize", i);
+        }
         startActivity(intent);
     }
 
@@ -157,12 +192,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for(LatLng ll: markerPositions) {
                     Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
                     if(results[0] < 100) {
-                        // if(list.size() <= index) {
                         if(!list.get(index).get(3).equals("isNotified")) {
+                            String toSpeak = list.get(index).get(0);
+                            Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+                            tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
                             sendNotice(list.get(index).get(0), list.get(index).get(1));
+                            vibe.vibrate(100);
+                            StringBuilder sb = new StringBuilder();
+                            String title = list.get(index).get(0);
+                            String text = list.get(index).get(1);
+                            sb.append(title);
+                            sb.append(text);
+                            tts.setSpeechRate(1);
+                            tts.speak(sb.toString(), TextToSpeech.QUEUE_FLUSH, null);
                             list.get(index).set(3, "isNotified");
+                            NotificationPopup popup = new NotificationPopup();
+                            popup.show(getFragmentManager(), "Notification done?");
                         }
-                        //}
                     }
                     index++;
                 }
@@ -174,6 +220,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void getLocation(View view) {
+        vibe.vibrate(80);
         updatePos();
     }
 
@@ -230,7 +277,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         // if(list.size() <= index) {
                         if (!list.get(index).get(3).equals("isNotified")) {
                             sendNotice(list.get(index).get(0), list.get(index).get(1));
+                            vibe.vibrate(100);
+                            StringBuilder sb = new StringBuilder();
+                            String title = list.get(index).get(0);
+                            String text = list.get(index).get(1);
+                            sb.append(title);
+                            sb.append(text);
+                            tts.setSpeechRate(1);
+                            tts.speak(sb.toString(), TextToSpeech.QUEUE_FLUSH, null);
                             list.get(index).set(3, "isNotified");
+                            NotificationPopup popup = new NotificationPopup();
+                            popup.show(getFragmentManager(), "Notification done?");
                             //}
                         }
                         index++;
@@ -262,7 +319,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         // if(list.size() <= index) {
                         if (!list.get(index).get(3).equals("isNotified")) {
                             sendNotice(list.get(index).get(0), list.get(index).get(1));
+                            vibe.vibrate(100);
+                            StringBuilder sb = new StringBuilder();
+                            String title = list.get(index).get(0);
+                            String text = list.get(index).get(1);
+                            sb.append(title);
+                            sb.append(text);
+                            tts.setSpeechRate(1);
+                            tts.speak(sb.toString(), TextToSpeech.QUEUE_FLUSH, null);
                             list.get(index).set(3, "isNotified");
+                            NotificationPopup popup = new NotificationPopup();
+                            popup.show(getFragmentManager(), "Notification done?");
                             //}
                         }
                         index++;
