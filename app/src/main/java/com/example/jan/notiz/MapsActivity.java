@@ -90,6 +90,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             sb.append("array");
             sb.append(i);
             list.add(getIntent().getStringArrayListExtra(sb.toString()));
+            LatLng adr = getLocationFromAddress(this, list.get(j).get(2));
+            markerPositions.add(adr);
         }
 
     }
@@ -119,12 +121,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //ArrayList<String> list = getIntent().getStringArrayListExtra("notArray");
         vibe.vibrate(80);
         int size = getIntent().getIntExtra("int", 0);
-        for(int j = 0; j < size; ++j) {
+        for(j = 0; j < size; ++j) {
             //StringBuilder sb = new StringBuilder();
             //sb.append("array");
             //sb.append(j);
             //list.add(getIntent().getStringArrayListExtra(sb.toString()));
             LatLng adr = getLocationFromAddress(this, list.get(j).get(2));
+            //markerPositions.add(adr);
             if (adr != null) {
                 addMarker(adr);
             }
@@ -162,7 +165,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void addMarker(LatLng pos) {
         //mMap.addMarker(new MarkerOptions().position(pos).title(notifications.get(nbrNotifications).get(0)));
         mMap.addMarker(new MarkerOptions().position(pos).title(list.get(j).get(0)));
-        markerPositions.add(pos);
+        //markerPositions.add(pos);
     }
 
     public void goBack(View view) {
