@@ -11,8 +11,11 @@ public class NotificationPopup extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
+        Bundle args = getArguments();
+        String title = args.getString("title");
+        System.out.println(title);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Have you completed the task in your notification?")
+        builder.setMessage("Have you completed the task in the notification " + "'" + title + "'" + " ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         MediaPlayer mp = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.applause);

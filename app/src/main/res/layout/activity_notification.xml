@@ -15,7 +15,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Enter your notification name"
+        android:hint="Enter your notification text"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:textSize="22sp"
@@ -35,7 +35,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Enter your notification text"
+        android:hint="Enter additional text (optional)"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:textSize="22sp"
@@ -44,7 +44,7 @@
         app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.187" />
+        app:layout_constraintVertical_bias="0.294" />
 
     <EditText
         android:id="@+id/address"
@@ -55,7 +55,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Enter the address"
+        android:hint="Enter the location name"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:textSize="22sp"
@@ -64,7 +64,7 @@
         app:layout_constraintHorizontal_bias="0.904"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.343" />
+        app:layout_constraintVertical_bias="0.161" />
     <!--
     <Button
         android:id="@+id/savebutton"
@@ -118,10 +118,10 @@
         android:onClick="saveNotification"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/notificationText"
+        app:layout_constraintVertical_bias="0.025"
         app:srcCompat="@drawable/disk" />
 
 

@@ -77,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
         mFab = (FloatingActionButton) findViewById(R.id.myloc);
         updatePos();
         results = new float[1];
@@ -191,6 +192,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void gotLocation(Location location) {
                 // Location found!
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+                /*
                 int index = 0;
                 for(LatLng ll: markerPositions) {
                     Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
@@ -214,7 +216,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }
                     index++;
+
                 }
+                */
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
             }
         };
@@ -315,6 +319,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onLocationChanged(Location location) {
             if (mMap != null) {
                 //mMap.clear();
+                Bundle args = new Bundle();
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
                 int index = 0;
                 for(LatLng ll: markerPositions) {
@@ -332,7 +337,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             tts.setSpeechRate(1);
                             tts.speak(sb.toString(), TextToSpeech.QUEUE_FLUSH, null);
                             list.get(index).set(3, "isNotified");
+                            args.putString("title", list.get(index).get(0));
                             NotificationPopup popup = new NotificationPopup();
+                            popup.setArguments(args);
                             popup.show(getFragmentManager(), "Notification done?");
                             //}
                         }

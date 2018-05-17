@@ -34,10 +34,12 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<ArrayList<String>> toSend;
     ArrayAdapter<String> arrayAdapter;
     Vibrator vibe;
+    int items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        items = 0;
         setContentView(R.layout.activity_main);
         vibe = (Vibrator) MainActivity.this.getSystemService(Context.VIBRATOR_SERVICE);
         l = findViewById(R.id.list);
@@ -49,11 +51,16 @@ public class MainActivity extends AppCompatActivity {
                 notifications);
         l.setAdapter(arrayAdapter);
 
+
         l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // HÅRDKODAD ATT SKICKA ENBART EN STRÄNG FRÅN SENAST TILLAGDA NOTISEN. FUNKAR BARA FÖR 1 NOTIS
                 Intent intent = new Intent(getApplicationContext(), ItemListPopUpActivity.class);
-                intent.putExtra("detail", notification.get(1));
+                StringBuilder sb = new StringBuilder();
+                sb.append("item");
+                sb.append(position);
+                intent.putStringArrayListExtra(sb.toString(), toSend.get(position));
+                intent.putExtra("pos", position);
                 startActivity(intent);
             }
         });
