@@ -7,6 +7,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
@@ -39,10 +41,10 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
     ArrayList<String> notification;
     ArrayList<ArrayList<String>> toSend;
     ArrayAdapter<String> arrayAdapter;
+    SensorManager sensorMgr;
     Vibrator vibe;
     int items;
     ActionBar actionBar;
-    SensorManager sensorMgr;
     long lastUpdate;
     float x;
     float y;
@@ -57,8 +59,9 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
         super.onCreate(savedInstanceState);
 
          sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorMgr.registerListener(this,SensorManager.SENSOR_ACCELEROMETER,
-                SensorManager.SENSOR_DELAY_GAME);
+        sensorMgr.registerListener(this,SensorManager.SENSOR_ACCELEROMETER, SensorManager.SENSOR_DELAY_GAME);
+
+//        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         items = 0;
         setContentView(R.layout.activity_main);
@@ -231,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
                     Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
                     toSend.clear();
                     notifications.clear();
+                    arrayAdapter.clear();
 
                 }
                 last_x = x;
