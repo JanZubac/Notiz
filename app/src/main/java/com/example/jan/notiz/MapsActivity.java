@@ -55,12 +55,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ArrayList<LatLng> markerPositions;
     float[] results;
     Vibrator vibe;
+    boolean updatePos;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        updatePos = false;
         tts  =new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -219,7 +221,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
                 */
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
+                if(updatePos == false) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
+                    updatePos = true;
+                }
             }
         };
         getLocation(this, locationResult);
@@ -301,8 +306,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         index++;
                     }
                 }
-
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
+                    if(updatePos == false) {
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
+                        updatePos = true;
+                    }
             }
             //lm.removeUpdates(this);
             //lm.removeUpdates(locationListenerNetwork);
@@ -347,7 +354,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     }
                 }
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
+                if(updatePos == false) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
+                    updatePos = true;
+                }
             }
             //lm.removeUpdates(this);
 
