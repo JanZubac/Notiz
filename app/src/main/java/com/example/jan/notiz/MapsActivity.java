@@ -193,7 +193,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationResult = new LocationResult() {
             public void gotLocation(Location location) {
                 // Location found!
-                System.out.println("Got here");
+                //System.out.println("Got here");
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
                 //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
@@ -253,7 +253,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     LocationListener locationListenerGps = new LocationListener() {
         public void onLocationChanged(Location location) {
-            System.out.println("I AM CALLED");
+            //System.out.println("I AM CALLED");
             if (mMap != null) {
                 //mMap.clear();
                 int index = 0;
@@ -280,10 +280,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         index++;
                     }
                 }
-                   // if(updatePos == false) {
+                   if(updatePos == false) {
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
-                     //   updatePos = true;
-                    //}
+                        updatePos = true;
+                    }
             }
             //lm.removeUpdates(this);
             //lm.removeUpdates(locationListenerNetwork);
@@ -328,10 +328,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     }
                 }
-                //if(updatePos == false) {
+                if(updatePos == false) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
-                  //  updatePos = true;
-                //}
+                    updatePos = true;
+                }
             }
             //lm.removeUpdates(this);
 
