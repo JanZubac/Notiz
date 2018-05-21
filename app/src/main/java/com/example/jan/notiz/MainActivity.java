@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
 
         TextView tv = (TextView) findViewById(R.id.textview);
 
+        HintPopup popup = new HintPopup();
+        popup.show(getFragmentManager(), "hint");
 
         //Toolbar toolbar = findViewById(R.id.toolbar);
        //setSupportActionBar(toolbar);
@@ -230,8 +232,8 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
                 float speed = Math.abs(x+y+z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if (speed > 2000) {
-                    Log.d("sensor", "shake detected w/ speed: " + speed);
-                    Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
+                    //Log.d("sensor", "shake detected w/ speed: " + speed);
+                    //Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
                     toSend.clear();
                     notifications.clear();
                     arrayAdapter.clear();

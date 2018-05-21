@@ -17,7 +17,7 @@
     tools:context=".MapsActivity"
     />
 
-
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/myloc"
         android:layout_width="70dp"
@@ -32,6 +32,7 @@
         android:onClick="getLocation"
         app:backgroundTint="#818eff"
         app:srcCompat="@android:drawable/ic_menu_mylocation" />
+        -->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/markers"
