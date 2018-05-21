@@ -262,7 +262,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
                 for(LatLng ll: markerPositions) {
                     Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
-                    if (results[0] < 20) {
+                    if (results[0] < 15) {
                         // if(list.size() <= index) {
                         if (!list.get(index).get(3).equals("isNotified")) {
                             sendNotice(list.get(index).get(0), list.get(index).get(1));
@@ -307,7 +307,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 int index = 0;
                 for(LatLng ll: markerPositions) {
                     Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
-                    if(results[0] < 70) {
+                    if(results[0] < 15) {
                         // if(list.size() <= index) {
                         if (!list.get(index).get(3).equals("isNotified")) {
                             sendNotice(list.get(index).get(0), list.get(index).get(1));
