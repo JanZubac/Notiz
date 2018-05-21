@@ -80,7 +80,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
 
-        mFab = (FloatingActionButton) findViewById(R.id.myloc);
         updatePos();
         results = new float[1];
         list = new ArrayList<ArrayList<String>>();
@@ -96,6 +95,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng adr = getLocationFromAddress(this, list.get(j).get(2));
             markerPositions.add(adr);
         }
+
+        FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.back);
+        floatingButton.setAlpha(0.75f);
 
     }
 
