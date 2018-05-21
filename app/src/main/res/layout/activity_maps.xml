@@ -65,7 +65,7 @@
         android:layout_centerHorizontal="true"
         android:onClick="showMarkers"
         android:background="#459e86"
-        android:text="Add markers" />
+        android:text="Show markers" />
 
 
 </RelativeLayout>

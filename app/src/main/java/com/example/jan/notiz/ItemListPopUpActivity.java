@@ -36,7 +36,7 @@ public class ItemListPopUpActivity extends AppCompatActivity {
         } else {
         */
             tv.setText("Title: " + title + "\n" + "Text: " + text + "\n" + "Address: " + address);
-            tv.setTextSize(32);
+            tv.setTextSize(24);
             tv.setTextColor(Color.BLACK);
             /*tv.setBackgroundResource(R.drawable.wrinkled);*/
     }
