@@ -13,7 +13,6 @@ public class NotificationPopup extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         Bundle args = getArguments();
         String title = args.getString("title");
-        System.out.println(title);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Have you completed the task in the notification " + "'" + title + "'" + " ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

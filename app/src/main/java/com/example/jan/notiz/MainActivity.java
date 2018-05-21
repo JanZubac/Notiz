@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("BEFORE: ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
+        //System.out.println("BEFORE: ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 notification = data.getStringArrayListExtra("notificationArray");
