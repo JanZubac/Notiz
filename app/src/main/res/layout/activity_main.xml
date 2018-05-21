@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:background="@color/lightBlue"
     >
 
     <!--
@@ -39,7 +40,7 @@
 
     <ListView
         android:id="@+id/list"
-        android:layout_width="388dp"
+        android:layout_width="300dp"
         android:layout_height="425dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -67,7 +68,7 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.625"
+        app:layout_constraintHorizontal_bias="0.712"
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
@@ -79,15 +80,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="sendCoordinates"
-        android:src="@drawable/map_8"
         android:adjustViewBounds="true"
+        android:onClick="sendCoordinates"
         android:scaleType="centerInside"
+        android:src="@drawable/map_8"
 
         app:backgroundTint="#459e86"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.324"
+        app:layout_constraintHorizontal_bias="0.296"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
