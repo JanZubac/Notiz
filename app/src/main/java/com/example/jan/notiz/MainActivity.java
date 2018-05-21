@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
 
         l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // HÅRDKODAD ATT SKICKA ENBART EN STRÄNG FRÅN SENAST TILLAGDA NOTISEN. FUNKAR BARA FÖR 1 NOTIS
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ItemListPopUpActivity.class);
                 StringBuilder sb = new StringBuilder();
                 sb.append("item");
