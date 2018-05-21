@@ -126,6 +126,7 @@
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:onClick="saveNotification"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.451"
@@ -133,6 +134,27 @@
         app:layout_constraintTop_toBottomOf="@+id/notificationText"
         app:layout_constraintVertical_bias="0.035"
         app:srcCompat="@drawable/disk" />
+<!--
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/karta"
+        android:layout_width="71dp"
+        android:layout_height="64dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="72dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:onClick="saveNotification"
+        android:scaleType="centerInside"
+        android:src="@drawable/savebutton"
 
+        app:backgroundTint="#459e86"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
+-->
 </android.support.constraint.ConstraintLayout>

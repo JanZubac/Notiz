@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
 
                 float speed = Math.abs(x+y+z - last_x - last_y - last_z) / diffTime * 10000;
 
-                if (speed > 2000) {
+                if (speed > 10000) {
                     //Log.d("sensor", "shake detected w/ speed: " + speed);
                     //Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
                     toSend.clear();
