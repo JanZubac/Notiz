@@ -123,54 +123,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void showMarkers(View view) {
-        //ArrayList<String> list = getIntent().getStringArrayListExtra("notArray");
         vibe.vibrate(80);
         int size = getIntent().getIntExtra("int", 0);
         for(j = 0; j < size; ++j) {
-            //StringBuilder sb = new StringBuilder();
-            //sb.append("array");
-            //sb.append(j);
-            //list.add(getIntent().getStringArrayListExtra(sb.toString()));
             LatLng adr = getLocationFromAddress(this, list.get(j).get(2));
-            //markerPositions.add(adr);
             if (adr != null) {
                 addMarker(adr);
             }
         }
-        /*
-        if(list != null) {
-            notifications.add(list);
-            LatLng adr = getLocationFromAddress(this, list.get(2)); // 2 is the address
-
-            if (adr != null) {
-                addMarker(adr);
-            }
-            nbrNotifications++;
-        } */
     }
-
-
-    /*
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2) {
-            if (resultCode == RESULT_OK) {
-                notifications.add(data.getStringArrayListExtra("notArray"));
-                addMarker(getLocationFromAddress(this, notifications.get(nbrNotifications).get(2))); //2 is address
-            }
-        }
-        nbrNotifications++;
-        System.out.println("ON-ACTIVITY-RESULT FOR MAPS ACTIVITY");
-    }
-    */
-
 
 
     private void addMarker(LatLng pos) {
-        //mMap.addMarker(new MarkerOptions().position(pos).title(notifications.get(nbrNotifications).get(0)));
         mMap.addMarker(new MarkerOptions().position(pos).title(list.get(j).get(0)));
-        //markerPositions.add(pos);
     }
 
     public void goBack(View view) {
@@ -195,23 +160,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationResult = new LocationResult() {
             public void gotLocation(Location location) {
                 // Location found!
-                //System.out.println("Got here");
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
-                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 17));
-                //System.out.println("Got here");
             }
         };
 
         getLocation(this, locationResult);
     }
 
-
-
-    public void getLocation(View view) {
-        vibe.vibrate(80);
-        updatePos();
-    }
 
 
     public boolean getLocation(Context context, LocationResult result) {
@@ -255,15 +211,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     LocationListener locationListenerGps = new LocationListener() {
         public void onLocationChanged(Location location) {
-            //System.out.println("I AM CALLED");
             if (mMap != null) {
-                //mMap.clear();
                 int index = 0;
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
                 for(LatLng ll: markerPositions) {
                     Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
                     if (results[0] < 15) {
-                        // if(list.size() <= index) {
                         if (!list.get(index).get(3).equals("isNotified")) {
                             sendNotice(list.get(index).get(0), list.get(index).get(1));
                             vibe.vibrate(100);
@@ -277,7 +230,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             list.get(index).set(3, "isNotified");
                             NotificationPopup popup = new NotificationPopup();
                             popup.show(getFragmentManager(), "Notification done?");
-                            //}
                         }
                         index++;
                     }
@@ -287,8 +239,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         updatePos = true;
                     }
             }
-            //lm.removeUpdates(this);
-            //lm.removeUpdates(locationListenerNetwork);
         }
         public void onProviderDisabled(String provider) {}
         public void onProviderEnabled(String provider) {}
@@ -301,14 +251,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locationListenerNetwork = new LocationListener() {
         public void onLocationChanged(Location location) {
             if (mMap != null) {
-                //mMap.clear();
                 Bundle args = new Bundle();
                 LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
                 int index = 0;
                 for(LatLng ll: markerPositions) {
                     Location.distanceBetween(ll.latitude, ll.longitude, location.getLatitude(), location.getLongitude(), results);
                     if(results[0] < 15) {
-                        // if(list.size() <= index) {
                         if (!list.get(index).get(3).equals("isNotified")) {
                             sendNotice(list.get(index).get(0), list.get(index).get(1));
                             vibe.vibrate(100);
@@ -324,7 +272,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             NotificationPopup popup = new NotificationPopup();
                             popup.setArguments(args);
                             popup.show(getFragmentManager(), "Notification done?");
-                            //}
                         }
                         index++;
 
@@ -335,9 +282,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     updatePos = true;
                 }
             }
-            //lm.removeUpdates(this);
-
         }
+
         public void onProviderDisabled(String provider) {}
         public void onProviderEnabled(String provider) {}
         public void onStatusChanged(String provider, int status, Bundle extras) {}

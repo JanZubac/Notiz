@@ -20,24 +20,15 @@ public class ItemListPopUpActivity extends AppCompatActivity {
         int pos = intent.getIntExtra("pos", 0);
         sb.append("item");
         sb.append(pos);
-        //String val = intent.getStringExtra("detail");
+
         ArrayList<String> val = intent.getStringArrayListExtra(sb.toString());
         TextView tv = (TextView) findViewById(R.id.textview);
         String title = val.get(0);
         String text = val.get(1);
         String address = val.get(2);
-        /*
-        if(title == "" && text != "") {
-            tv.setText("Text: " + text + "\n" + "Address: " + address);
-        } else if(title == "" && text == "") {
-            tv.setText("Address: " + address);
-        } else if(title != "" && text == "") {
-            tv.setText("Title: " + title + "\n" + "Address: " + address);
-        } else {
-        */
-            tv.setText("Title: " + title + "\n" + "Text: " + text + "\n" + "Address: " + address);
-            tv.setTextSize(24);
-            tv.setTextColor(Color.BLACK);
-            /*tv.setBackgroundResource(R.drawable.wrinkled);*/
+
+        tv.setText("Title: " + title + "\n" + "Text: " + text + "\n" + "Address: " + address);
+        tv.setTextSize(24);
+        tv.setTextColor(Color.BLACK);
     }
 }

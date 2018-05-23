@@ -93,9 +93,6 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
         HintPopup popup = new HintPopup();
         popup.show(getFragmentManager(), "hint");
 
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-       //setSupportActionBar(toolbar);
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.addicon);
@@ -113,33 +110,6 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
             }
         }
 
-        /*
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,  "main")
-                .setSmallIcon(R.drawable.exl)
-                .setContentTitle("Bra jobbat!")
-                .setContentText("Du startade nyss världens bästa applikation")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel
-            CharSequence name = "Comm channel";
-            String description = "Notification channel";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel("main", name, importance);
-            mChannel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = (NotificationManager) getSystemService(
-                    NOTIFICATION_SERVICE);
-
-            NotificationManagerCompat notMan = NotificationManagerCompat.from(this);
-
-
-            notificationManager.createNotificationChannel(mChannel);
-            notMan.notify(0, mBuilder.build());
-        }
-        */
-
         FloatingActionButton mapButton = findViewById(R.id.karta);
         fab.setImageResource(R.drawable.addicon);
 
@@ -148,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //System.out.println("BEFORE: ON-ACTIVITY-RESULT FOR NOTIFICATION ACTIVITY");
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 notification = data.getStringArrayListExtra("notificationArray");
@@ -174,15 +143,12 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
             intent.putStringArrayListExtra(sb.toString(), l);
             i++;
         }
-        //intent.putStringArrayListExtra("notArray", notification); //FUNKAR ENDAST OM MAN GÅR DIREKT FRÅN NOT -> MAIN -> MAP
         intent.putExtra("int", i);
 
         setResult(RESULT_OK, intent);
         startActivityForResult(intent, 2);
 
         finish();
-
-       // System.out.println("SENDING COORDINATES");
     }
 
 
@@ -232,8 +198,6 @@ public class MainActivity extends AppCompatActivity implements SensorListener {
                 float speed = Math.abs(x+y+z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if (speed > 10000) {
-                    //Log.d("sensor", "shake detected w/ speed: " + speed);
-                    //Toast.makeText(this, "shake detected w/ speed: " + speed, Toast.LENGTH_SHORT).show();
                     toSend.clear();
                     notifications.clear();
                     arrayAdapter.clear();

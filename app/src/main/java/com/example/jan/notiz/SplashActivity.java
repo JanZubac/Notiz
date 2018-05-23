@@ -22,13 +22,5 @@ public class SplashActivity extends AppCompatActivity{
                 }
             }, SPLASH_DISPLAY_LENGTH);
         }
-
-            /*
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-
-        }
-        */
     }
 

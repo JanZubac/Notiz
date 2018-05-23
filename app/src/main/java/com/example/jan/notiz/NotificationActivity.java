@@ -33,7 +33,6 @@ public class NotificationActivity extends AppCompatActivity {
         title = findViewById(R.id.title);
         text = findViewById(R.id.notificationText);
         address = findViewById(R.id.address);
-       // saveButton = findViewById(R.id.savebutton);
         backButton = findViewById(R.id.back);
     }
 
@@ -51,20 +50,12 @@ public class NotificationActivity extends AppCompatActivity {
             return;
         }
         intent.putStringArrayListExtra("notificationArray", notification);
-        //intent.putExtra("editTextValue", text.getText().toString());
         setResult(RESULT_OK, intent);
-        //setContentView(R.layout.activity_main);
         finish();
-        System.out.println("SENDING NOTIFICATION DATA TO MAIN-ACTIVITY");
     }
 
     public void goBack(View view) {
-        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //startActivity(intent);
-
-        //setContentView(R.layout.activity_main);
         vibe.vibrate(80);
-
         finish();
     }
 
